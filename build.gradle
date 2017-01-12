@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+sourceCompatibility = '1.8'
+
+buildscript {      // Configuration for building
+    repositories {
+        jcenter()      // Bintray's repository - a fast Maven Central mirror & more
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'application'
+mainClassName = "ca.aytech.examples.dropwizard.WebApplication"
+
+project.ext {
+    dropwizardVersion = '1.0.0'
+    configPath = "$project.projectDir/config/example.yaml"
+}
+
+run {
+    args 'server', configPath
+}
+
+dependencies {
+    compile "io.dropwizard:dropwizard-core:$dropwizardVersion"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
